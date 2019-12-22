@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!---->	
+		<div class="container">
+			<div class="content-top top-product">
+				<h5 class="welcome">WELCOME TO MOOROODOOL</h5>
+				<div class="search">
+					<form>
+						<input type="text" value="type your search here..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
+						<input type="submit" value="">
+					</form>
+				</div>
+				<div class="clearfix"> </div>
+			</div>		
+				<!---->
+
+				{% for list in products %}
+				<div class="content-bottom bottom-product">
+					{% for product,j in zip(list, range(3)) %}
+
+					{% if j == 1 or j == 3%}
+						<div class="col-md-4 bottom-content">
+					{% else %}
+						<div class="col-md-4 bottom-content ten">
+					{% endif %}
+						{% if product != 0 %}
+						<a href="{{url_for('single', productName = product.name)}}"><img class="img-responsive" src="/static/{{product.photos.filter_by(product_id = product.id).filter_by(photo_status = 1).first().photo_link }}" alt="" >
+						<p class="tun">{{ product.name }}</p>
+						<p class="number">IDR<span>{{ product.price }}</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>{{ product.category.name }}</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>
+					{% else %}
+						<!--
+						<a href="/404.html"><img class="img-responsive" src="/static/images/pi3.jpg" alt="" >
+						<p class="tun">None</p>
+						<p class="number">IDR<span>None</span></p>
+						<div class="pro-grid">
+								<p>None</p>
+								<b>None</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>--> 			
+					</div>
+					{% endif %}
+					{% endfor %}
+					<!--
+					<div class="col-md-4 bottom-content ten">
+						<a href="single.html"><img class="img-responsive" src="/static/images/pi4.jpg" alt="" >
+						<p class="tun">LOOKS VS PERSONALITY</p>
+						<p class="number">IDR<span>125.000</span></p>
+						<p class="best">BEST <span>SELLER</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>
+						<a href="single.html"><img class="img-responsive" src="/static/images/pi5.jpg" alt="" >
+						<p class="tun">WHERE AM I?</p>
+						<p class="number">IDR<span>125.000</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>-->
+					<div class="clearfix"> </div>
+				</div>
+				{% endfor %}
+				<!--
+				<div class="content-bottom bottom-product">
+					<div class="col-md-4 bottom-content">
+						<a href="single.html"><img class="img-responsive" src="images/pi.jpg" alt="" >
+						<p class="tun">LOOKS VS PERSONALITY</p>
+						<p class="best">BEST <span>SELLER</span></p>
+						<p class="number">IDR<span>125.000</span></p>
+						<div class="pro-grid">
+								<p>WHERE AM I?</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						
+						</a>			
+					</div>
+					<div class="col-md-4 bottom-content ten">
+						<a href="single.html"><img class="img-responsive" src="images/pi1.jpg" alt="" >
+						<p class="tun">TUNDA BESOK</p>
+						<p class="number">IDR<span>125.000</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>
+					<div class="col-md-4 bottom-content">
+						<a href="single.html"><img class="img-responsive" src="images/pi2.jpg" alt="" >
+						<p class="tun">WHERE AM I?</p>
+						<p class="number">IDR<span>125.000</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			-->
+				<!--
+				<div class="content-bottom  bottom-product">
+					<div class="col-md-4 bottom-content">
+						<a href="single.html"><img class="img-responsive" src="images/pi3.jpg" alt="" >
+						<p class="tun">TUNDA BESOK</p>
+						
+						<p class="number">IDR<span>125.000</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>
+					<div class="col-md-4 bottom-content ten">
+						<a href="single.html"><img class="img-responsive" src="images/pi4.jpg" alt="" >
+						<p class="tun">LOOKS VS PERSONALITY</p>
+						<p class="number">IDR<span>125.000</span></p>
+						<p class="best">BEST <span>SELLER</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>
+					<div class="col-md-4 bottom-content">
+						<a href="single.html"><img class="img-responsive" src="images/pi5.jpg" alt="" >
+						<p class="tun">TUNDA BESOK</p>
+						<p class="number">IDR<span>125.000</span></p>
+						<div class="pro-grid">
+								<p>LOOKS VS PERSONALITY</p>
+								<b>T-shirt</b>
+									<div class="pro-btns">
+										<span class="detail" >Detail</span>
+										<span class="buy-in" >ADD TO CART</span>
+									</div>
+							</div>
+						</a>			
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			-->
+				<!---->
+				<ul class="start">
+					{% if page - 2 >= 1 %}
+					<li><a href="{{url_for('product', page = page - 1)}}"><i> </i></a></li>
+					{% endif %}
+					{% if page in (1,2) %}
+					<li><a href="{{ url_for('product',page = 1) }}"><span>1</span></a></li>
+					<li><a href="{{ url_for('product',page = 2) }}"><span>2</span></a></li>
+					{% if numberOfPages > 3 %}
+					<li><a href="{{ url_for('product',page = 3) }}"><span>3</span></a></li>
+					{% endif %}
+					{% elif page + 1 <= numberOfPages %}					
+					{% for i in range(page-1, page+2) %}
+					<li><a href="{{ url_for('product',page = i) }}"><span>{{ i }}</span></a></li>
+					{% endfor %}
+					{% else %}
+					{% for i in range(page-2, page+1) %}
+					<li><a href="{{ url_for('product',page = i) }}"><span>{{ i  }}</span></a></li>
+					{% endfor %}
+					{% endif %}
+					{% if page + 2 <= numberOfPages %}
+					<li><a href="{{url_for('product', page = page + 1)}}"><i class="next"> </i></a></li>
+					{% endif %}
+				</ul>
+				<!---->
+				
+{% endblock %}
