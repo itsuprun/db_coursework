@@ -77,10 +77,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="top-nav">
                     <span class="menu"> </span>
                     <ul>
-                        <li class="active"><a href="index.html">HOME</a> </li>
+                        <li class="active"><a href="{{url_for('index')}}">HOME</a> </li>
                         <li><a href="{{ url_for('product',page=1) }}" > PRODUCTS</a></li>
                         <li><a href="404.html" >  BLOGS  </a></li>
-                        <li><a href="contact.html">CONTACT </a></li>
+                        <li><a href="{{url_for('contact')}}">CONTACT </a></li>
                     </ul>
                     <!--script-->
                 <script>

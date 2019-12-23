@@ -86,8 +86,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			  	<h3>Registered customers</h3>
 				<p>If you have an account with us, please log in.</p>
 				<form action="" method="post">
+				  {{ form.hidden_tag() }}
 				  <div>
-                    {{ form.hidden_tag() }}
 					<span>Email Address</span>
 		            {{ form.username(size=32) }}<br>
 		            {% for error in form.username.errors %}
@@ -101,6 +101,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		            <span style="color: red;">[{{ error }}]</span>
             		{% endfor %} 
 				  </div>
+				  <a class="forgot" href="{{url_for('reset_password_request')}}">Forgot Your Password?</a>
 				  <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
                     <p>{{ form.submit() }}</p>
 			    </form>
