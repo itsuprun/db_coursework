@@ -188,25 +188,25 @@
 				<!---->
 				<ul class="start">
 					{% if page - 2 >= 1 %}
-					<li><a href="{{url_for('product', page = page - 1)}}"><i> </i></a></li>
+					<li><a href="{{url_for('product', page = page - 1, filter = filter)}}"><i> </i></a></li>
 					{% endif %}
 					{% if page in (1,2) %}
-					<li><a href="{{ url_for('product',page = 1) }}"><span>1</span></a></li>
-					<li><a href="{{ url_for('product',page = 2) }}"><span>2</span></a></li>
+					<li><a href="{{ url_for('product',page = 1, filter = filter) }}"><span>1</span></a></li>
+					<li><a href="{{ url_for('product',page = 2, filter = filter) }}"><span>2</span></a></li>
 					{% if numberOfPages > 3 %}
-					<li><a href="{{ url_for('product',page = 3) }}"><span>3</span></a></li>
+					<li><a href="{{ url_for('product',page = 3, filter = filter) }}"><span>3</span></a></li>
 					{% endif %}
 					{% elif page + 1 <= numberOfPages %}					
 					{% for i in range(page-1, page+2) %}
-					<li><a href="{{ url_for('product',page = i) }}"><span>{{ i }}</span></a></li>
+					<li><a href="{{ url_for('product',page = i, filter = filter) }}"><span>{{ i }}</span></a></li>
 					{% endfor %}
 					{% else %}
 					{% for i in range(page-2, page+1) %}
-					<li><a href="{{ url_for('product',page = i) }}"><span>{{ i  }}</span></a></li>
+					<li><a href="{{ url_for('product',page = i, filter = filter) }}"><span>{{ i  }}</span></a></li>
 					{% endfor %}
 					{% endif %}
 					{% if page + 2 <= numberOfPages %}
-					<li><a href="{{url_for('product', page = page + 1)}}"><i class="next"> </i></a></li>
+					<li><a href="{{url_for('product', page = page + 1, filter = filter)}}"><i class="next"> </i></a></li>
 					{% endif %}
 				</ul>
 				<!---->

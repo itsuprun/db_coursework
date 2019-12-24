@@ -100,14 +100,14 @@ bestselling product for this month!!</h4>
 				<div class="clearfix"> </div>
 			</div>	
 			<!---->
-			<div class="content-middle">
+			<div class="content-middle" style = "background:url(../static/{{ old_banner }})no-repeat 0px 0px; background-size: cover;">
 				<div class="middle-content">
 					<div class="middle">
 						<h3>NEW YEAR’S SALE</h3>
 						<p>discount up to <b>70%</b> for<span>our old products</span></p>
 						<p class="from">from january 1st 2014 to march 30th 2014</p>
 					</div>
-						<a href="single.html" class="get">GET THEM HERE!!!</a>
+						<a href="{{url_for('product', page=1, filter='old')}}" class="get">GET THEM HERE!!!</a>
 				</div>
 					<div class="clearfix"> </div>
 			</div>

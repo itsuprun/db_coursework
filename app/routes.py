@@ -25,7 +25,8 @@ def index():
 		}
 	]
 	bestSellerPhotos = Productphoto.query.filter_by(photo_status = 2).all()
-	return render_template('index.html', title='Home', posts=posts, bestSellerPhotos = bestSellerPhotos[0:4])
+	old_banner = Productphoto.query.filter_by(photo_status = 3).first().photo_link
+	return render_template('index.html', title='Home', posts=posts, bestSellerPhotos = bestSellerPhotos[0:4], old_banner = old_banner)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,16 +66,23 @@ def register():
 		return redirect(url_for('login'))
 	return render_template('register.html', title='Register', form=form)
 
-@app.route('/product/<page>')
-def product(page):
-	listOfProduct = Product.query.all()
+@app.route('/product/<page>', defaults = {'filter': None})
+@app.route('/product/<page>/<filter>')
+def product(page, filter = None):
+	if filter == None:
+		listOfProduct = Product.query.all()
+	elif filter == 'old':
+		oldProductPhotos = Productphoto.query.filter_by(photo_status = 3).all()
+		listOfProduct = []
+		for photo in oldProductPhotos:
+			listOfProduct.append(photo.photo)
 	listOfProducts = listOfProduct*20
 	productsStore = [[[0 if i+j*9+k*3 >= len(listOfProducts) else listOfProducts[i+j*9+k*3] for i in range(3)] for k in range(3)] for j in range(math.ceil(len(listOfProducts)/9))]
 	numberOfPages = len(productsStore)
 	products = productsStore[int(page)-1]
 	categories = Category.query.all()
 	return render_template('product.html', categories = categories, products = products, zip=zip,
-	 numberOfPages = numberOfPages, page = int(page))
+	 numberOfPages = numberOfPages, page = int(page), filter = filter)
 
 
 

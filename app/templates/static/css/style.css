@@ -276,11 +276,9 @@ h5.welcome{
 }
 /*----*/
 .content-middle{
-	background:url(../images/men.jpg)no-repeat 0px 0px;
 	width:100%;
 	min-height:315px;
 	display:block;
-	background-size:cover;
 	margin: 0 0 2em;
 }
 .middle-content{
