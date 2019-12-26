@@ -6,9 +6,13 @@
 			<div class="content-top top-product">
 				<h5 class="welcome">WELCOME TO MOOROODOOL</h5>
 				<div class="search">
-					<form>
-						<input type="text" value="type your search here..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
-						<input type="submit" value="">
+					<form action="" method="post">
+						{{ form.hidden_tag() }}
+						{{ form.search(size=32, value = 'type your search here...', onfocus="this.value = '';", onblur="if (this.value == '') {this.value = '';}" ) }}
+						{% for error in form.search.errors %}
+			            <span style="color: red;">[{{ error }}]</span>
+			            {% endfor %}
+			            {{ form.submit() }}
 					</form>
 				</div>
 				<div class="clearfix"> </div>
@@ -188,25 +192,25 @@
 				<!---->
 				<ul class="start">
 					{% if page - 2 >= 1 %}
-					<li><a href="{{url_for('product', page = page - 1, filter = filter)}}"><i> </i></a></li>
+					<li><a href="{{url_for('product', page = page - 1, filter = filter, data = data)}}"><i> </i></a></li>
 					{% endif %}
 					{% if page in (1,2) %}
-					<li><a href="{{ url_for('product',page = 1, filter = filter) }}"><span>1</span></a></li>
-					<li><a href="{{ url_for('product',page = 2, filter = filter) }}"><span>2</span></a></li>
-					{% if numberOfPages > 3 %}
-					<li><a href="{{ url_for('product',page = 3, filter = filter) }}"><span>3</span></a></li>
+					<li><a href="{{ url_for('product',page = 1, filter = filter,  data = data) }}"><span>1</span></a></li>
+					<li><a href="{{ url_for('product',page = 2, filter = filter, data = data) }}"><span>2</span></a></li>
+					{% if numberOfPages >= 3 %}
+					<li><a href="{{ url_for('product',page = 3, filter = filter,  data = data) }}"><span>3</span></a></li>
 					{% endif %}
 					{% elif page + 1 <= numberOfPages %}					
 					{% for i in range(page-1, page+2) %}
-					<li><a href="{{ url_for('product',page = i, filter = filter) }}"><span>{{ i }}</span></a></li>
+					<li><a href="{{ url_for('product',page = i, filter = filter, data = data) }}"><span>{{ i }}</span></a></li>
 					{% endfor %}
 					{% else %}
 					{% for i in range(page-2, page+1) %}
-					<li><a href="{{ url_for('product',page = i, filter = filter) }}"><span>{{ i  }}</span></a></li>
+					<li><a href="{{ url_for('product',page = i, filter = filter,  data = data) }}"><span>{{ i  }}</span></a></li>
 					{% endfor %}
 					{% endif %}
 					{% if page + 2 <= numberOfPages %}
-					<li><a href="{{url_for('product', page = page + 1, filter = filter)}}"><i class="next"> </i></a></li>
+					<li><a href="{{url_for('product', page = page + 1, filter = filter,  data = data)}}"><i class="next"> </i></a></li>
 					{% endif %}
 				</ul>
 				<!---->

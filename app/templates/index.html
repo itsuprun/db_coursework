@@ -32,47 +32,6 @@ bestselling product for this month!!</h4>
 				   	 </div>
 			</article>
 			{% endfor %}
-<!--
-			<article style="position: absolute; width: 100%; opacity: 0;"> 
-				   	<div class="banner-wrap">	
-						<div class="short" >
-							<img class="img-responsive" src="/static/images/sh.png" alt="" >
-						 </div>
-						   <div class="month">
-							<h4>check out our most favorited & 
-bestselling product for this month!!</h4>
-							<div class="month-grid">
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-								<div class="banner-btns">
-									<span  >Detail</span>
-									<span class="buy">Buy Product</span>
-								</div>
-							</div>
-						   </div>
-				   		 <div class="clearfix"> </div>
-				   	 </div>
-			</article>
-
-			<article style="position: absolute; width: 100%; opacity: 0;"> 
-				   	<div class="banner-wrap">	
-						<div class="short" >
-							<img class="img-responsive" src="/static/images/sh1.png" alt="" >
-						 </div>
-						   <div class="month">
-							<h4>check out our most favorited & 
-bestselling product for this month!!</h4>
-							<div class="month-grid">
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-								<div class="banner-btns">
-									<span href="#">Detail</span>
-									<span class="buy" >Buy Product</span>
-								</div>
-							</div>
-						   </div>
-				   		 <div class="clearfix"> </div>
-				   	 </div>
-			</article>
--->
 			</div>
 		</div>
 		<!---->
@@ -92,9 +51,13 @@ bestselling product for this month!!</h4>
 			<div class="content-top">
 				<h5 class="welcome">WELCOME TO MOOROODOOL</h5>
 				<div class="search">
-					<form>
-						<input type="text" value="type your search here..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
-						<input type="submit" value="">
+					<form action="" method="post">
+						{{ form.hidden_tag() }}
+						{{ form.search(size=32, value = 'type your search here...', onfocus="this.value = '';", onblur="if (this.value == '') {this.value = '';}" ) }}
+						{% for error in form.search.errors %}
+			            <span style="color: red;">[{{ error }}]</span>
+			            {% endfor %}
+			            {{ form.submit() }}
 					</form>
 				</div>
 				<div class="clearfix"> </div>

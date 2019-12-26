@@ -64,7 +64,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="header-right">
                     <ul class="account">
                         <li ><a href="account.html">MY ACCOUNT</a> </li> |
-                        <li><a href="checkout.html" > CHECKOUT </a></li>|
+                        <li><a href="{{url_for('checkout')}}" > CHECKOUT </a></li>|
                         <li>{% if current_user.is_anonymous %}
                             <a href="{{ url_for('login') }}">LOGIN</a>
                             {% else %}
@@ -79,7 +79,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <ul>
                         <li class="active"><a href="{{url_for('index')}}">HOME</a> </li>
                         <li><a href="{{ url_for('product',page=1) }}" > PRODUCTS</a></li>
-                        <li><a href="404.html" >  BLOGS  </a></li>
+                        <li><a href="{{ url_for('error_404') }}" >  BLOGS  </a></li>
                         <li><a href="{{url_for('contact')}}">CONTACT </a></li>
                     </ul>
                     <!--script-->

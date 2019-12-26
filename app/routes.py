@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ContactForm
+from app.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ContactForm, SearchForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post, Product, Category, Productphoto
 from app.email import send_password_reset_email, send_contact_form_email
@@ -10,23 +10,16 @@ import math
 def static_file():
 	return app.send_static_file('login.html')
 
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
 #@login_required
 def index():
-	user = {'username': 'Miguel'}
-	posts = [
-		{
-			'author': {'username': 'John'},
-			'body': 'Beautiful day in Portland!'
-		},
-		{
-			'author': {'username': 'Susan'},
-			'body': 'The Avengers movie was so cool!'
-		}
-	]
 	bestSellerPhotos = Productphoto.query.filter_by(photo_status = 2).all()
 	old_banner = Productphoto.query.filter_by(photo_status = 3).first().photo_link
-	return render_template('index.html', title='Home', posts=posts, bestSellerPhotos = bestSellerPhotos[0:4], old_banner = old_banner)
+	form = SearchForm()
+	if form.validate_on_submit():
+		searchData = form.search.data
+		return redirect(url_for('product', page = 1, filter = 'search', data = searchData))
+	return render_template('index.html', title='Home', bestSellerPhotos = bestSellerPhotos[0:4], old_banner = old_banner, form = form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -66,9 +59,10 @@ def register():
 		return redirect(url_for('login'))
 	return render_template('register.html', title='Register', form=form)
 
-@app.route('/product/<page>', defaults = {'filter': None})
-@app.route('/product/<page>/<filter>')
-def product(page, filter = None):
+@app.route('/product/<page>', defaults = {'filter': None}, methods = ['GET','POST'])
+@app.route('/product/<page>/<filter>', defaults = {'data': None}, methods = ['GET','POST'])
+@app.route('/product/<page>/<filter>/<data>', methods = ['GET','POST'])
+def product(page, filter = None, data = None):
 	if filter == None:
 		listOfProduct = Product.query.all()
 	elif filter == 'old':
@@ -76,13 +70,19 @@ def product(page, filter = None):
 		listOfProduct = []
 		for photo in oldProductPhotos:
 			listOfProduct.append(photo.photo)
+	elif filter == 'search':
+		listOfProduct = Product.query.filter(Product.name.like('%{}%'.format(data))).all()	
 	listOfProducts = listOfProduct*20
 	productsStore = [[[0 if i+j*9+k*3 >= len(listOfProducts) else listOfProducts[i+j*9+k*3] for i in range(3)] for k in range(3)] for j in range(math.ceil(len(listOfProducts)/9))]
 	numberOfPages = len(productsStore)
 	products = productsStore[int(page)-1]
 	categories = Category.query.all()
+	form = SearchForm()
+	if form.validate_on_submit():
+		searchData = form.search.data
+		return redirect(url_for('product', page = 1, filter = 'search', data = searchData))
 	return render_template('product.html', categories = categories, products = products, zip=zip,
-	 numberOfPages = numberOfPages, page = int(page), filter = filter)
+	 numberOfPages = numberOfPages, page = int(page), filter = filter, data = data, form=form)
 
 
 
@@ -135,3 +135,11 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+@app.route('/error404')
+def error_404():
+	return render_template('404.html')
+
+@app.route('/checkout')
+def checkout():
+	return render_template('checkout.html')
