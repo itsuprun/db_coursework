@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ContactForm, SearchForm
+from app.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ContactForm, SearchForm, OrderForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Post, Product, Category, Productphoto
+from app.models import User, Post, Product, Category, Productphoto, Order, Orderproduct
 from app.email import send_password_reset_email, send_contact_form_email
+from sqlalchemy import desc, asc
 import math
 
 @app.route('/')
@@ -36,6 +37,9 @@ def login():
 		#if not next_page or url_parse(next_page).netloc != '':
 		#    next_page = url_for('index')
 		#return redirect(next_page)
+		user_order = Order(user_id = current_user.id, phone_number = '', adress = '')
+		db.session.add(user_order)
+		db.session.commit()
 		return redirect(url_for('index'))
 	return render_template('login.html', title='Sign In', form=form)
 
@@ -140,6 +144,37 @@ def reset_password(token):
 def error_404():
 	return render_template('404.html')
 
-@app.route('/checkout')
-def checkout():
-	return render_template('checkout.html')
+@app.route('/checkout', defaults = {'orderedProductId': None}, methods = ['GET','POST'])
+@app.route('/checkout/<orderedProductId>', defaults = {'deleteProductId': None}, methods = ['GET','POST'])
+@app.route('/checkout/<orderedProductId>/<deleteProductId>', methods = ['GET','POST'])
+@login_required
+def checkout(orderedProductId = None, deleteProductId = None):
+	if (orderedProductId != None and orderedProductId != 'delete'):
+		order_id = current_user.orders.filter_by(user_id = current_user.id).order_by(desc(Order.timestamp)).first().id
+		p = Orderproduct(product_id = orderedProductId, order_id = order_id)
+		db.session.add(p)
+		db.session.commit()
+	if deleteProductId != None:
+		product_to_delete = Orderproduct.query.filter_by(id = deleteProductId).first()
+		db.session.delete(product_to_delete)
+		db.session.commit()	
+	current_order = current_user.orders.filter_by(user_id = current_user.id).order_by(desc(Order.timestamp)).first()
+	ordered_products_list = Orderproduct.query.filter_by(order_id = current_order.id).all()
+	return render_template('checkout.html', ordered_products_list = ordered_products_list,len = len, zip = zip)
+
+@app.route('/order/<current_order>', methods = ['GET','POST'])
+@login_required
+def order(current_order):
+	form = OrderForm()
+	current_order = Order.query.filter_by(id = current_order).first()
+	if form.validate_on_submit():
+		current_order.adress = form.adress.data
+		current_order.phone_number = form.phone.data
+		db.session.commit()
+		return redirect(url_for('order_submit'))
+	return render_template('order.html', form = form)
+
+@app.route('/order_submit')
+@login_required
+def order_submit():
+	return render_template('order_submit.html')

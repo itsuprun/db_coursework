@@ -22,7 +22,7 @@ bestselling product for this month!!</h4>
 									<a href="{{ url_for('single', productName = photo.photo.name) }}" class="ban">
 									<span class="detail" href="{{ url_for('single', productName = photo.photo.name) }}">Detail</span>
 									</a>
-									<a href="{{ url_for('single', productName = photo.photo.name) }}" class="ban">
+									<a href="{{url_for('checkout', orderedProductId = photo.photo.id)}}" class="ban">
 									<span class="buy" href="#">Buy Product</span>
 									</a>
 								</div>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<!---->	
+		<div class="container">
+			<div class="contact-form">
+				<div class="col-md-6 contact-grid">
+					<h4>Order form</h4>
+					<form action = "", method = "post">
+						{{ form.hidden_tag() }}
+						<p class="your-para">Your Adress</p>
+						{{ form.adress(size=64) }}
+						{% for error in form.adress.errors %}
+			            <span style="color: red;">[{{ error }}]</span>
+			            {% endfor %} 
+						<p class="your-para">Your Phone</p>
+						{{ form.phone(size=20) }}
+						{% for error in form.phone.errors %}
+			            <span style="color: red;">[{{ error }}]</span>
+			            {% endfor %} 
+						<div class="send">
+						{{ form.submit() }}
+						</div>
+					</form>
+				</div>
+				<div class="col-md-6 contact-in">
+					
+					<div class="map">
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d37494223.23909492!2d103!3d55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x453c569a896724fb%3A0x1409fdf86611f613!2sRussia!5e0!3m2!1sen!2sin!4v1415776049771"></iframe>
+			</div>
+<h4>Contact information</h4>
+					<div class="more-address"> 
+						<div class="address-more">
+							<p>The company name,</p>
+							<p>Lorem ipsum dolor,</p>
+							<p>Glasglow Dr 40 Fe 72. </p>
+						</div>
+						<div class="address-left">
+							<p>Tel:1115550001</p>
+							<p>Fax:190-4509-494</p>
+							<p>Email: <a href="mailto:info@example.com">info@example.com</a></p>
+						</div>
+						<div class="clearfix"> </div>
+				</div>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+
+{% endblock %}

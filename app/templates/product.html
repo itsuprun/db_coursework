@@ -29,18 +29,21 @@
 						<div class="col-md-4 bottom-content ten">
 					{% endif %}
 						{% if product != 0 %}
-						<a href="{{url_for('single', productName = product.name)}}"><img class="img-responsive" src="/static/{{product.photos.filter_by(product_id = product.id).filter_by(photo_status = 1).first().photo_link }}" alt="" >
+						<img class="img-responsive" src="/static/{{product.photos.filter_by(product_id = product.id).filter_by(photo_status = 1).first().photo_link }}" alt="" > 
 						<p class="tun">{{ product.name }}</p>
 						<p class="number">IDR<span>{{ product.price }}</span></p>
 						<div class="pro-grid">
 								<p>LOOKS VS PERSONALITY</p>
 								<b>{{ product.category.name }}</b>
 									<div class="pro-btns">
+										<a href="{{url_for('single', productName = product.name)}}">
 										<span class="detail" >Detail</span>
+										</a>
+										<a href="{{url_for('checkout', orderedProductId = product.id)}}">
 										<span class="buy-in" >ADD TO CART</span>
+										</a>
 									</div>
-							</div>
-						</a>			
+							</div>			
 					</div>
 					{% else %}
 						<!--

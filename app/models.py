@@ -8,75 +8,97 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(64), index=True, unique=True)
+	email = db.Column(db.String(120), index=True, unique=True)
+	password_hash = db.Column(db.String(128))
+	posts = db.relationship('Post', backref='author', lazy='dynamic')
+	orders = db.relationship('Order', backref='order_author', lazy='dynamic')
 
 
-    def __repr__(self):
-        return '<User {}>'.format(self.username)
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+	def __repr__(self):
+		return '<User {}>'.format(self.username)
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)    
+	def set_password(self, password):
+		self.password_hash = generate_password_hash(password)
 
-    def get_reset_password_token(self, expires_in=600):
-        return jwt.encode(
-            {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
-            
-    @staticmethod
-    def verify_reset_password_token(token):
-        try:
-            id = jwt.decode(token, app.config['SECRET_KEY'],
-                            algorithms=['HS256'])['reset_password']
-        except:
-            return
-        return User.query.get(id)            
+	def check_password(self, password):
+		return check_password_hash(self.password_hash, password)    
+
+	def get_reset_password_token(self, expires_in=600):
+		return jwt.encode(
+			{'reset_password': self.id, 'exp': time() + expires_in},
+			app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+			
+	@staticmethod
+	def verify_reset_password_token(token):
+		try:
+			id = jwt.decode(token, app.config['SECRET_KEY'],
+							algorithms=['HS256'])['reset_password']
+		except:
+			return
+		return User.query.get(id)            
 
 @login.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+	return User.query.get(int(id))
 
 class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	id = db.Column(db.Integer, primary_key=True)
+	body = db.Column(db.String(140))
+	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __repr__(self):
-        return '<Post {}>'.format(self.body)
+	def __repr__(self):
+		return '<Post {}>'.format(self.body)
 
 class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(140), index = True, unique = True)
-    products = db.relationship('Product', backref='category', lazy='dynamic')
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(140), index = True, unique = True)
+	products = db.relationship('Product', backref='category', lazy='dynamic')
 
-    def __repr__(self):
-        return '<Category {}>'.format(self.name)
+	def __repr__(self):
+		return '<Category {}>'.format(self.name)
 
 class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(140), index = True, unique = True)
-    description = db.Column(db.String(512))
-    price = db.Column(db.Float)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    photos = db.relationship('Productphoto', backref='photo', lazy='dynamic')
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(140), index = True, unique = True)
+	description = db.Column(db.String(512))
+	price = db.Column(db.Float)
+	category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+	photos = db.relationship('Productphoto', backref='photo', lazy='dynamic')
+	ordered_products = db.relationship('Orderproduct', backref='ordered_product', lazy='dynamic')
 
-    def __repr__(self):
-        return '<Product {}>'.format(self.name) 
+	def __repr__(self):
+		return '<Product {}>'.format(self.name) 
 
 
 class Productphoto(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
-    photo_link = db.Column(db.String(256))
-    photo_status = db.Column(db.Integer, default = 0)
+	id = db.Column(db.Integer, primary_key=True)
+	product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+	photo_link = db.Column(db.String(256))
+	photo_status = db.Column(db.Integer, default = 0)
 
 
-    def __repr__(self):
-        return '<Productphoto {}>'.format(self.product_id)
+	def __repr__(self):
+		return '<Productphoto {}>'.format(self.product_id)
+
+class Order(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	phone_number = db.Column(db.String(140), unique = False)
+	adress = db.Column(db.String(140))
+	products = db.relationship('Orderproduct', backref ='orderProduct', lazy ='dynamic') 
+
+	def __repr__(self):
+		return '<Order {}>'.format(self.id)
+
+class Orderproduct(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+	order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+
+	def __repr__(self):
+		return '<Orderproduct {}>'.format(self.id)

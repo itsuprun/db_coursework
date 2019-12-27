@@ -5,8 +5,23 @@
 		<div class="container">
 			<div class="check-out">
          <div class="container">
+         	{% if ordered_products_list == []%}
     	     <h4 class="title">Shopping cart is empty</h4>
     	     <p class="cart">You have no items in your shopping cart.<br>Click<a href="{{ url_for('index') }}"> here</a> to continue shopping</p>
-    	   </div>
+    	    {% else %}
+    	    <h4 class = "title">Your order:</h4>
+    	    <p class= "cart">No | Product              | Price | </p>
+    	    {% for product,j in zip(ordered_products_list, range(len(ordered_products_list))) %}
+    	    <!--<h4>{{ product.id }} || {{product.product_id }} || {{product.order_id }} </h4>-->
+    	    <p class= "cart">{{ j+1 }}. |{{ product.ordered_product.name }}| {{ product.ordered_product.price }} | <div class="pro-btns"><a href="{{ url_for('checkout',orderedProductId = 'delete', deleteProductId = product.id) }}">
+										<span class="buy-in" >DELETE</span>
+										</a></div></p>
+    	    {% endfor %}
+    	    <p class="cart">Click<a href="{{ url_for('index') }}"> here</a> to continue shopping</p>
+    	    <div class="pro-btns"><a href="{{ url_for('order', current_order = ordered_products_list[0].order_id)}}">
+										<span class="buy-in" >CREATE ORDER</span>
+										</a></div>
+    	    {% endif %}	
+ 	   	   </div>
 		</div>
 {% endblock %} 

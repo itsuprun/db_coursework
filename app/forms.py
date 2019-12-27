@@ -47,4 +47,9 @@ class ContactForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired()])
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	text = TextAreaField('Message', validators=[DataRequired()])
-	submit = SubmitField('Send')    
+	submit = SubmitField('Send')
+
+class OrderForm(FlaskForm):
+	adress = StringField('Adress', validators=[DataRequired()])
+	phone = StringField('Phone', validators=[DataRequired()])
+	submit = SubmitField('Order')
